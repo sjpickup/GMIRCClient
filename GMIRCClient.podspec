@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "GMIRCClient"
-  s.version          = "0.1.3"
+  s.version          = "0.1.4"
   s.summary          = "GMIRCClient is a lightweight iOS IRC client, entirely written in Swift."
 
   s.homepage         = "https://github.com/eugenio79/GMIRCClient"

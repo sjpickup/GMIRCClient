@@ -75,10 +75,10 @@ extension GMIRCClient: GMIRCClientProtocol {
         _socket.open()
     }
 
-    public func register(nickName: String, user: String, realName: String, pass: String) {
+    // Alternative registration method when user and realName 
+    // aren't known/needed
+    public func register(nickName: String, pass: String) {
         _nickName = nickName
-        _user = user
-        _realName = realName
         _pass = pass
         
         _socket.delegate = self
@@ -127,7 +127,10 @@ extension GMIRCClient: GMSocketDelegate {
             }
             
             _sendCommand("NICK \(_nickName)")
-            _sendCommand("USER \(_user) 0 * : \(_realName)")
+
+            if (_user != nil && _realName != nil) {
+                _sendCommand("USER \(_user) 0 * : \(_realName)")
+            }
         }
     }
     
