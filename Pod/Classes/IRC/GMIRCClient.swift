@@ -122,7 +122,7 @@ extension GMIRCClient: GMSocketDelegate {
             
             _waitingForRegistration = true
 
-            if _pass {
+            if (_pass != nil) {
                 _sendCommand("PASS \(_pass)")            
             }
             
