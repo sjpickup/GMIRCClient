@@ -67,10 +67,15 @@ extension GMIRCClient: GMIRCClientProtocol {
     }
     
     public func register(nickName: String, user: String, realName: String) {
-        register(nickName, user, realName)
+        _nickName = nickName
+        _user = user
+        _realName = realName
+        
+        _socket.delegate = self
+        _socket.open()
     }
 
-    public func register(nickName: String, user: String, realName: String, pass: String) {
+    public func registerWithPassword(nickName: String, user: String, realName: String, pass: String) {
         _nickName = nickName
         _user = user
         _realName = realName
