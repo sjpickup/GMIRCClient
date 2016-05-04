@@ -32,6 +32,7 @@ public class GMIRCClient: NSObject {
     private var _nickName: String! = ""
     private var _user: String! = ""
     private var _realName: String! = ""
+    private var _pass: String! = ""    
     
     /// true when a I registered successfully (user and nick)
     private var _connectionRegistered = false
@@ -66,9 +67,14 @@ extension GMIRCClient: GMIRCClientProtocol {
     }
     
     public func register(nickName: String, user: String, realName: String) {
+        register(nickName, user, realName)
+    }
+
+    public func register(nickName: String, user: String, realName: String, pass: String) {
         _nickName = nickName
         _user = user
         _realName = realName
+        _pass = pass
         
         _socket.delegate = self
         _socket.open()
@@ -110,6 +116,10 @@ extension GMIRCClient: GMSocketDelegate {
         if !_connectionRegistered && !_waitingForRegistration {
             
             _waitingForRegistration = true
+
+            if _pass {
+                _sendCommand("PASS \(_pass)")            
+            }
             
             _sendCommand("NICK \(_nickName)")
             _sendCommand("USER \(_user) 0 * : \(_realName)")
