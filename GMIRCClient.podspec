@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.homepage         = "https://github.com/eugenio79/GMIRCClient"
   s.license          = 'MIT'
   s.author           = { "Giuseppe Morana aka Eugenio" => "giuseppe.morana.79@gmail.com" }
-  s.source           = { :git => "https://github.com/eugenio79/GMIRCClient.git" }
+  s.source           = { :git => "https://github.com/jameseunson/GMIRCClient.git" }
 
   s.ios.deployment_target = '7.0'
   s.tvos.deployment_target = '9.0'
