@@ -77,7 +77,7 @@ extension GMIRCClient: GMIRCClientProtocol {
 
     // Alternative registration method when user and realName 
     // aren't known/needed
-    public func register(nickName: String, pass: String) {
+    public func registerWithNickname(nickName: String, pass: String) {
         _nickName = nickName
         _pass = pass
         
