@@ -31,6 +31,10 @@ public protocol GMIRCClientProtocol: NSObjectProtocol {
     
     /// In order to start an IRC session, you'd provide at least a nick name and a real name
     func register(nickName: String, user: String, realName: String)
+
+    // Alternative registration method when user and realName 
+    // aren't known/needed
+    func registerWithNickname(nickName: String, pass: String)
     
     /// Join a channel / chat room
     func join(channel: String)

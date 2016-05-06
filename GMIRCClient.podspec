@@ -8,10 +8,10 @@
 
 Pod::Spec.new do |s|
   s.name             = "GMIRCClient"
-  s.version          = "0.1.5"
+  s.version          = "0.1.6"
   s.summary          = "GMIRCClient is a lightweight iOS IRC client, entirely written in Swift."
 
-  s.homepage         = "https://github.com/eugenio79/GMIRCClient"
+  s.homepage         = "https://github.com/jameseunson/GMIRCClient"
   s.license          = 'MIT'
   s.author           = { "Giuseppe Morana aka Eugenio" => "giuseppe.morana.79@gmail.com" }
   s.source           = { :git => "https://github.com/jameseunson/GMIRCClient.git" }
