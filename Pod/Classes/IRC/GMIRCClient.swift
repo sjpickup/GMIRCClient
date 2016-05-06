@@ -134,7 +134,6 @@ extension GMIRCClient: GMSocketDelegate {
         }
     }
     
-    
     public func didReceiveMessage(msg: String) {
         
         print("\(msg)")
@@ -191,6 +190,7 @@ private extension GMIRCClient {
         case "PRIVMSG":
             delegate?.didReceivePrivateMessage(ircMsg!.params!.textToBeSent!, from: ircMsg!.prefix!.nickName!)
         default:
+            delegate?.didReceiveMessage(message: GMIRCMessage)
 //            print("Message not handled: \(msg)")
             break;
         }

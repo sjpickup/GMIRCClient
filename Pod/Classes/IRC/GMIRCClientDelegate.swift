@@ -34,4 +34,9 @@ public protocol GMIRCClientDelegate: NSObjectProtocol {
     /// @param text The text sent by the user
     /// @param from The nickName of who sent you the message
     func didReceivePrivateMessage(text: String, from: String)
+
+    /// Called when someone sent a message to the channel
+    /// @param text The text sent by the user
+    /// @param from The nickName of who sent the message
+    func didReceiveMessage(message: GMIRCMessage)
 }
