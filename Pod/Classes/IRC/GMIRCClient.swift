@@ -190,7 +190,7 @@ private extension GMIRCClient {
         case "PRIVMSG":
             delegate?.didReceivePrivateMessage(ircMsg!.params!.textToBeSent!, from: ircMsg!.prefix!.nickName!)
         default:
-            delegate?.didReceiveMessage(message: GMIRCMessage)
+            delegate?.didReceiveMessage(ircMsg!)
 //            print("Message not handled: \(msg)")
             break;
         }
