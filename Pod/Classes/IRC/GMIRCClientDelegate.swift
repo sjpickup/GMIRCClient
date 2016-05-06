@@ -20,7 +20,7 @@
 
 import Foundation
 
-public protocol GMIRCClientDelegate: NSObjectProtocol {
+@objc public protocol GMIRCClientDelegate: NSObjectProtocol {
     
     /// When this method is called, the channel is ready
     /// At this point you can join a chat room
