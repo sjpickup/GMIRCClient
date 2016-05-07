@@ -38,6 +38,9 @@ public protocol GMIRCClientProtocol: NSObjectProtocol {
     
     /// Join a channel / chat room
     func join(channel: String)
+
+    /// Leave a channel / chat room
+    func leave(channel: String)
     
     /// Send a private message to a specific user (identified by its nickname)
     /// @param message The message to send

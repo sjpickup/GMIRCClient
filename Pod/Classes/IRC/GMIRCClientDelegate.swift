@@ -29,6 +29,10 @@ import Foundation
     /// Called when successfully joined a chat room
     /// @param channel Prepend an hash symbol (#) to the chat room name, e.g. "#test"
     func didJoin(channel: String)
+
+    /// Called when successfully left a chat room
+    /// @param channel Prepend an hash symbol (#) to the chat room name, e.g. "#test"
+    func didLeave(channel: String)    
     
     /// Called when someone sent you a private message
     /// @param text The text sent by the user

@@ -91,6 +91,13 @@ extension GMIRCClient: GMIRCClientProtocol {
         }
         _sendCommand("JOIN \(channel)")
     }
+
+    public func leave(channel: String) {
+        guard !channel.isEmpty && channel.hasPrefix("#") else {
+            return
+        }
+        _sendCommand("PART \(channel)")
+    }    
     
     public func sendMessageToNickName(message: String, nickName: String) {
         guard !nickName.hasPrefix("#") else {
@@ -135,8 +142,6 @@ extension GMIRCClient: GMSocketDelegate {
     }
     
     public func didReceiveMessage(msg: String) {
-        
-        print("\(msg)")
         
         let msgList = msg.componentsSeparatedByString(ENDLINE)
         for line in msgList {
@@ -183,11 +188,17 @@ private extension GMIRCClient {
         
         switch ircMsg!.command! {
         case "001":
+            print("\(msg)")        
             _ready = true
             delegate?.didWelcome()
         case "JOIN":
+            print("\(msg)")               
             delegate?.didJoin(ircMsg!.params!.unparsed!)
+        case "PART":
+            print("\(msg)")               
+            delegate?.didLeave(ircMsg!.params!.unparsed!)            
         case "PRIVMSG":
+            print("\(msg)")               
             delegate?.didReceivePrivateMessage(ircMsg!.params!.textToBeSent!, from: ircMsg!.prefix!.nickName!)
         default:
             delegate?.didReceiveMessage(ircMsg!)
