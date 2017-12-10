@@ -20,30 +20,30 @@
 
 import Foundation
 
-public class GMIRCClient: NSObject {
+open class GMIRCClient: NSObject {
     
-    public weak var delegate: GMIRCClientDelegate?
+    open weak var delegate: GMIRCClientDelegate?
     
-    private enum REPLY: String {
+    fileprivate enum REPLY: String {
         case WELCOME = "001"
     }
     
-    private var _socket: GMSocketProtocol!
-    private var _nickName: String! = ""
-    private var _user: String! = ""
-    private var _realName: String! = ""
+    fileprivate var _socket: GMSocketProtocol!
+    fileprivate var _nickName: String! = ""
+    fileprivate var _user: String! = ""
+    fileprivate var _realName: String! = ""
     
     /// true when a I registered successfully (user and nick)
-    private var _connectionRegistered = false
+    fileprivate var _connectionRegistered = false
     
     /// true when waiting for registration response
-    private var _waitingForRegistration = false
+    fileprivate var _waitingForRegistration = false
     
     /// true when received the welcome message from the server
-    private var _ready = false
+    fileprivate var _ready = false
     
     /// each IRC message should end with this sequence
-    private let ENDLINE = "\r\n"
+    fileprivate let ENDLINE = "\r\n"
     
     required public init(socket: GMSocketProtocol) {
         
@@ -65,7 +65,7 @@ extension GMIRCClient: GMIRCClientProtocol {
         return _socket.port
     }
     
-    public func register(nickName: String, user: String, realName: String) {
+    public func register(_ nickName: String, user: String, realName: String) {
         _nickName = nickName
         _user = user
         _realName = realName
@@ -74,14 +74,14 @@ extension GMIRCClient: GMIRCClientProtocol {
         _socket.open()
     }
     
-    public func join(channel: String) {
+    public func join(_ channel: String) {
         guard !channel.isEmpty && channel.hasPrefix("#") else {
             return
         }
         _sendCommand("JOIN \(channel)")
     }
     
-    public func sendMessageToNickName(message: String, nickName: String) {
+    public func sendMessageToNickName(_ message: String, nickName: String) {
         guard !nickName.hasPrefix("#") else {
             print("Invalid nickName")
             return
@@ -89,7 +89,7 @@ extension GMIRCClient: GMIRCClientProtocol {
         _sendCommand("PRIVMSG \(nickName) :\(message)")
     }
     
-    public func sendMessageToChannel(message: String, channel: String) {
+    public func sendMessageToChannel(_ message: String, channel: String) {
         guard channel.hasPrefix("#") else {
             print("Invalid channel")
             return
@@ -117,11 +117,11 @@ extension GMIRCClient: GMSocketDelegate {
     }
     
     
-    public func didReceiveMessage(msg: String) {
+    public func didReceiveMessage(_ msg: String) {
         
         print("\(msg)")
         
-        let msgList = msg.componentsSeparatedByString(ENDLINE)
+        let msgList = msg.components(separatedBy: ENDLINE)
         for line in msgList {
             if line.hasPrefix("PING") {
                 _pong(msg)
@@ -141,13 +141,13 @@ extension GMIRCClient: GMSocketDelegate {
 // MARK: - private
 private extension GMIRCClient {
     
-    func _sendCommand(command: String) {
+    func _sendCommand(_ command: String) {
         let msg = command + ENDLINE
         _socket.sendMessage(msg)
     }
     
-    func _pong(msg: String) {
-        let token = msg.stringByReplacingOccurrencesOfString("PING :", withString: "").stringByReplacingOccurrencesOfString(ENDLINE, withString: "")
+    func _pong(_ msg: String) {
+        let token = msg.replacingOccurrences(of: "PING :", with: "").replacingOccurrences(of: ENDLINE, with: "")
         
         _connectionRegistered = true    // When I receive the first PING I suppose my registration is done
         _waitingForRegistration = false
@@ -155,7 +155,7 @@ private extension GMIRCClient {
         _sendCommand("PONG \(token)")
     }
     
-    func _handleMessage(msg: String) {
+    func _handleMessage(_ msg: String) {
         
         let ircMsg = GMIRCMessage(message: msg)
 

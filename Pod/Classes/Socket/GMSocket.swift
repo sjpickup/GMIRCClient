@@ -21,19 +21,19 @@
 import Foundation
 
 /// A simplet implementation of a socket protocol
-public class GMSocket: NSObject {
+open class GMSocket: NSObject {
     
     /// The host to which the socket will connect (e.g. "irc.freenode.net")
-    private(set) public var host: String
+    fileprivate(set) open var host: String
     
     /// The port to which the socket will connect (e.g. 6667)
-    private(set) public var port: Int
+    fileprivate(set) open var port: Int
     
-    public weak var delegate: GMSocketDelegate?
+    open weak var delegate: GMSocketDelegate?
     
-    private var inputStream: NSInputStream?
-    private var outputStream: NSOutputStream?
-    private var isOpen: Bool = false
+    fileprivate var inputStream: InputStream?
+    fileprivate var outputStream: OutputStream?
+    fileprivate var isOpen: Bool = false
     
     required public init(host: String, port: Int) {
         self.host = host
@@ -51,10 +51,10 @@ extension GMSocket: GMSocketProtocol {
             return
         }
         
-        NSStream.getStreamsToHostWithName(host, port: port, inputStream: &inputStream, outputStream: &outputStream)
+        Stream.getStreamsToHost(withName: host, port: port, inputStream: &inputStream, outputStream: &outputStream)
         
-        inputStream!.scheduleInRunLoop(.mainRunLoop(), forMode: NSDefaultRunLoopMode)
-        outputStream!.scheduleInRunLoop(.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+        inputStream!.schedule(in: .main, forMode: RunLoopMode.defaultRunLoopMode)
+        outputStream!.schedule(in: .main, forMode: RunLoopMode.defaultRunLoopMode)
         
         inputStream!.delegate = self
         outputStream!.delegate = self
@@ -78,37 +78,37 @@ extension GMSocket: GMSocketProtocol {
         isOpen = false
     }
     
-    public func sendMessage(message: String) {
+    public func sendMessage(_ message: String) {
         
         guard isOpen else {
             print("Can't send message: socket is closed")
             return
         }
         
-        let data = NSData(data: message.dataUsingEncoding(NSASCIIStringEncoding)!)
-        let buffer = UnsafePointer<UInt8>(data.bytes)
+        let data = NSData(data: message.data(using: String.Encoding.ascii)!) as Data
+        let buffer = (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count)
         
-        outputStream!.write(buffer, maxLength: data.length)
+        outputStream!.write(buffer, maxLength: data.count)
     }
 }
 
 // MARK: - NSStreamDelegate
-extension GMSocket: NSStreamDelegate {
+extension GMSocket: StreamDelegate {
     
-    public func stream(aStream: NSStream, handleEvent eventCode: NSStreamEvent) {
+    public func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         
         switch eventCode {
-        case NSStreamEvent.None:
+        case Stream.Event():
             print("Socket event: None")
-        case NSStreamEvent.OpenCompleted:
+        case Stream.Event.openCompleted:
             _openCompleted()
-        case NSStreamEvent.HasBytesAvailable:
+        case Stream.Event.hasBytesAvailable:
             _hasBytesAvailable(aStream)
-        case NSStreamEvent.HasSpaceAvailable:
+        case Stream.Event.hasSpaceAvailable:
             _hasSpaceAvailable()
-        case NSStreamEvent.ErrorOccurred:
+        case Stream.Event.errorOccurred:
             print("Socket: unknown error")
-        case NSStreamEvent.EndEncountered:
+        case Stream.Event.endEncountered:
             _endEncountered(aStream)
         default:
             print("Unknown socket event")
@@ -124,18 +124,18 @@ private extension GMSocket {
         delegate?.didOpen()
     }
     
-    func _hasBytesAvailable(aStream: NSStream) {
+    func _hasBytesAvailable(_ aStream: Stream) {
         
         guard aStream == inputStream else {
             print("Received bytes aren't for my inputStream")
             return
         }
         
-        var buffer = [UInt8](count: 1024, repeatedValue: 0)
+        var buffer = [UInt8](repeating: 0, count: 1024)
         while inputStream!.hasBytesAvailable {
             let len = inputStream!.read(&buffer, maxLength: 1024)
             if len > 0 {
-                let output = NSString(bytes: buffer, length: len, encoding: NSASCIIStringEncoding)
+                let output = NSString(bytes: buffer, length: len, encoding: String.Encoding.ascii.rawValue)
                 if output != nil && delegate != nil {
                     delegate!.didReceiveMessage(output! as String)
                 }
@@ -147,9 +147,9 @@ private extension GMSocket {
         delegate?.didReadyToSendMessages()
     }
     
-    func _endEncountered(aStream: NSStream) {
+    func _endEncountered(_ aStream: Stream) {
         aStream.close()
-        aStream.removeFromRunLoop(.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+        aStream.remove(from: .main, forMode: RunLoopMode.defaultRunLoopMode)
         delegate?.didClose()
     }
 }

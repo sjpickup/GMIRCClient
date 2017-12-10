@@ -28,10 +28,10 @@ public protocol GMIRCClientDelegate: NSObjectProtocol {
     
     /// Called when successfully joined a chat room
     /// @param channel Prepend an hash symbol (#) to the chat room name, e.g. "#test"
-    func didJoin(channel: String)
+    func didJoin(_ channel: String)
     
     /// Called when someone sent you a private message
     /// @param text The text sent by the user
     /// @param from The nickName of who sent you the message
-    func didReceivePrivateMessage(text: String, from: String)
+    func didReceivePrivateMessage(_ text: String, from: String)
 }

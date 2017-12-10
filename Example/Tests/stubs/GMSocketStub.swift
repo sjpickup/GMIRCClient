@@ -25,11 +25,11 @@ class GMSocketStub: NSObject, GMSocketProtocol {
     
     weak var delegate: GMSocketDelegate?
     
-    private(set) var host: String
-    private(set) var port: Int
+    fileprivate(set) var host: String
+    fileprivate(set) var port: Int
     
     /// Fake response map
-    private var _responseMap: [String: String]
+    fileprivate var _responseMap: [String: String]
     
     required init(host: String, port: Int) {
         self.host = host
@@ -46,14 +46,14 @@ class GMSocketStub: NSObject, GMSocketProtocol {
         delegate?.didClose()
     }
     
-    func sendMessage(message: String) {
+    func sendMessage(_ message: String) {
         if let response = _responseMap[message] {
             delegate?.didReceiveMessage(response)
         }
     }
     
     // fake method - you can establish which response you want at a specified message
-    func responseToMessage(msg: String, response: String) {
+    func responseToMessage(_ msg: String, response: String) {
         _responseMap[msg + "\r\n"] = response
     }
 }

@@ -39,5 +39,5 @@ import Foundation
     func close()
     
     /// Send a message on the socket (the socket should be open)
-    func sendMessage(message: String)
+    func sendMessage(_ message: String)
 }

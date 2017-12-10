@@ -47,13 +47,13 @@ extension ViewController: GMIRCClientDelegate {
         irc.join("#test")
     }
     
-    func didJoin(channel: String) {
+    func didJoin(_ channel: String) {
         print("Joined chat room: \(channel)")
         
         irc.sendMessageToNickName("Hi, I'm eugenio_ios. Nice to meet you!", nickName: "eugenio79")
     }
     
-    func didReceivePrivateMessage(text: String, from: String) {
+    func didReceivePrivateMessage(_ text: String, from: String) {
         print("\(from): \(text)")
     }
 }

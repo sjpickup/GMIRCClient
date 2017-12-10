@@ -28,7 +28,7 @@ import Foundation
     func didOpen()
     
     /// Called when receiving a message
-    func didReceiveMessage(message: String)
+    func didReceiveMessage(_ message: String)
     
     /// Called when the socket is ready to receive messages from the client
     func didReadyToSendMessages()

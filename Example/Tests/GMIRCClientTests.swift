@@ -49,18 +49,18 @@ class GMIRCClientTests: XCTestCase, GMIRCClientDelegate {
         
         socket.responseToMessage("JOIN #test", response: ":eugenio!~eugenio_i@93-34-6-226.ip47.fastwebnet.it JOIN #test")
         
-        expectation = expectationWithDescription("Welcome expectation")
+        expectation = self.expectation(withDescription: "Welcome expectation")
         
         ircClient.register("eugenio", user: "eugenio", realName: "eugenio")
         
-        waitForExpectationsWithTimeout(0.05) { error in
+        waitForExpectations(timeout: 0.05) { error in
             XCTAssertNil(error)
             
-            self.expectation = self.expectationWithDescription("Join expectation")
+            self.expectation = self.expectation(withDescription: "Join expectation")
             
             self.ircClient.join("#test")
             
-            self.waitForExpectationsWithTimeout(0.05) { error in
+            self.waitForExpectations(timeout: 0.05) { error in
                 XCTAssertNil(error)
             }
         }
@@ -70,11 +70,11 @@ class GMIRCClientTests: XCTestCase, GMIRCClientDelegate {
 
         socket.responseToMessage("PRIVMSG eugenio79 :Hi, I\'m GMIRCClient. Nice to meet you!", response: ":eugenio79!~giuseppem@93-34-6-226.ip47.fastwebnet.it PRIVMSG GMIRCClient :Hi, I am a client too")
         
-        expectation = expectationWithDescription("Private message expectation")
+        expectation = self.expectation(withDescription: "Private message expectation")
         
         ircClient.sendMessageToNickName("Hi, I'm GMIRCClient. Nice to meet you!", nickName: "eugenio79")
         
-        waitForExpectationsWithTimeout(0.05) { error in
+        waitForExpectations(timeout: 0.05) { error in
             XCTAssertNil(error)
         }
     }
@@ -86,12 +86,12 @@ class GMIRCClientTests: XCTestCase, GMIRCClientDelegate {
         expectation.fulfill()
     }
     
-    func didJoin(channel: String) {
+    func didJoin(_ channel: String) {
         XCTAssertEqual(channel, "#test")
         expectation.fulfill()
     }
     
-    func didReceivePrivateMessage(text: String, from: String) {
+    func didReceivePrivateMessage(_ text: String, from: String) {
         print("\(from): \(text)")
         
         XCTAssertEqual(text, "Hi, I am a client too")

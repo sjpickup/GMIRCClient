@@ -21,12 +21,12 @@
 import Foundation
 
 /// An IRC message
-public class GMIRCMessage: NSObject {
+open class GMIRCMessage: NSObject {
     
-    private(set) var prefix: GMIRCMessagePrefix?
-    private(set) var command: String?
+    fileprivate(set) var prefix: GMIRCMessagePrefix?
+    fileprivate(set) var command: String?
 //    private(set) var parameters: String?
-    private(set) var params: GMIRCMessageParams?
+    fileprivate(set) var params: GMIRCMessageParams?
     
     /// format: prefix + cmd + params + crlf
     /// e.g. :card.freenode.net 001 eugenio_ios :Welcome to the freenode Internet Relay Chat Network eugenio_ios
@@ -39,19 +39,19 @@ public class GMIRCMessage: NSObject {
         
         // prefix
         if message.hasPrefix(":") {
-            if let idx = msg.characters.indexOf(" ") {
-                let prefixStr = msg.substringToIndex(idx)
+            if let idx = msg.index(of: " ") {
+                let prefixStr = msg.substring(to: idx)
                 prefix = GMIRCMessagePrefix(prefix: prefixStr)
-                msg = msg.substringFromIndex(idx.successor())
+                msg = msg.substring(from: idx)
             } else {
                 return nil
             }
         }
         
         // command
-        if let idx = msg.characters.indexOf(" ") {
-            command = msg.substringToIndex(idx)
-            msg = msg.substringFromIndex(idx.successor())
+        if let idx = msg.index(of: " ") {
+            command = msg.substring(to: idx)
+            msg = msg.substring( from: idx )
         } else {
             return nil
         }

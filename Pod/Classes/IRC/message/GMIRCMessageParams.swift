@@ -21,40 +21,40 @@
 import Foundation
 
 /// Encapsulates an IRC message params
-public class GMIRCMessageParams: NSObject {
+open class GMIRCMessageParams: NSObject {
     
     /// Here I put everything I'm not still able to parse
-    private(set) var unparsed: String?
+    fileprivate(set) var unparsed: String?
     
     /// e.g. the target of a PRIVMSG
-    private(set) var msgTarget: String?
+    fileprivate(set) var msgTarget: String?
     
     /// e.g. the the text of a PRIVMSG
-    private(set) var textToBeSent: String?
+    fileprivate(set) var textToBeSent: String?
     
     /// @param stringToParse e.g. "eugenio_ios :Hi, I am Eugenio too"
     init?(stringToParse: String) {
         
         super.init()
         
-        var idx = stringToParse.characters.indexOf(" ")
+        var idx = stringToParse.index(of: " ")
         
         if idx == nil {
             unparsed = stringToParse
             return
         }
         
-        msgTarget = stringToParse.substringToIndex(idx!)
+        msgTarget = stringToParse.substring(to: idx!)
         
-        let remaining = stringToParse.substringFromIndex(idx!.successor())
+        let remaining = stringToParse.substring(from: idx! )
         
-        idx = remaining.characters.indexOf(":")
+        idx = remaining.index(of: ":")
         
         if idx == nil {
             unparsed = remaining
             return
         }
         
-        textToBeSent = remaining.substringFromIndex(idx!.successor())
+        textToBeSent = remaining.substring(from: idx! )
     }
 }
