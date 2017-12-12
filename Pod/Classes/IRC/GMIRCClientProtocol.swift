@@ -30,10 +30,10 @@ public protocol GMIRCClientProtocol: NSObjectProtocol {
     func port() -> Int
     
     /// In order to start an IRC session, you'd provide at least a nick name and a real name
-    func register(_ nickName: String, user: String, realName: String)
+    func register( nickName: String, user: String, realName: String)
     
     /// Join a channel / chat room
-    func join(_ channel: String)
+    func join( channel: String)
     
     /// Send a private message to a specific user (identified by its nickname)
     /// @param message The message to send

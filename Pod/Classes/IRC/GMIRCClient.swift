@@ -28,10 +28,10 @@ open class GMIRCClient: NSObject {
         case WELCOME = "001"
     }
     
-    fileprivate var _socket: GMSocketProtocol!
-    fileprivate var _nickName: String! = ""
-    fileprivate var _user: String! = ""
-    fileprivate var _realName: String! = ""
+    fileprivate var _socket: GMSocketProtocol
+    fileprivate var _nickName: String = ""
+    fileprivate var _user: String = ""
+    fileprivate var _realName: String = ""
     
     /// true when a I registered successfully (user and nick)
     fileprivate var _connectionRegistered = false
@@ -47,10 +47,11 @@ open class GMIRCClient: NSObject {
     
     required public init(socket: GMSocketProtocol) {
         
+        _socket = socket
+        
         super.init()
         
-        _socket = socket
-        _socket!.delegate = self
+        _socket.delegate = self
     }
 }
 
@@ -65,7 +66,8 @@ extension GMIRCClient: GMIRCClientProtocol {
         return _socket.port
     }
     
-    public func register(_ nickName: String, user: String, realName: String) {
+    public func register( nickName: String, user: String, realName: String) {
+
         _nickName = nickName
         _user = user
         _realName = realName
@@ -74,7 +76,7 @@ extension GMIRCClient: GMIRCClientProtocol {
         _socket.open()
     }
     
-    public func join(_ channel: String) {
+    public func join( channel: String) {
         guard !channel.isEmpty && channel.hasPrefix("#") else {
             return
         }
