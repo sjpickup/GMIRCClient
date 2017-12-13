@@ -83,20 +83,20 @@ extension GMIRCClient: GMIRCClientProtocol {
         _sendCommand("JOIN \(channel)")
     }
     
-    public func sendMessageToNickName(_ message: String, nickName: String) {
-        guard !nickName.hasPrefix("#") else {
+    public func sendPrivateMessage(_ message: String, toNickName: String) {
+        guard !toNickName.hasPrefix("#") else {
             print("Invalid nickName")
             return
         }
-        _sendCommand("PRIVMSG \(nickName) :\(message)")
+        _sendCommand("PRIVMSG \(toNickName) :\(message)")
     }
     
-    public func sendMessageToChannel(_ message: String, channel: String) {
-        guard channel.hasPrefix("#") else {
+    public func sendMessage(_ message: String, toChannel: String) {
+        guard toChannel.hasPrefix("#") else {
             print("Invalid channel")
             return
         }
-        _sendCommand("PRIVMSG \(channel) :\(message)")
+        _sendCommand("PRIVMSG \(toChannel) :\(message)")
     }
 }
 
@@ -174,7 +174,7 @@ private extension GMIRCClient {
             _ready = true
             delegate?.didWelcome()
         case "JOIN":
-            delegate?.didJoin(ircMsg.params!.unparsed!)
+            delegate?.didJoin(ircMsg.params!.textToBeSent!)
         case "PRIVMSG":
             delegate?.didReceivePrivateMessage(ircMsg.params!.textToBeSent!, from: ircMsg.prefix!.nickName!)
         default:

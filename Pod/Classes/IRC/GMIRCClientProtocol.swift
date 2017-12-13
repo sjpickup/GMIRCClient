@@ -38,10 +38,10 @@ public protocol GMIRCClientProtocol: NSObjectProtocol {
     /// Send a private message to a specific user (identified by its nickname)
     /// @param message The message to send
     /// @param nickName The nickname of the recipient (e.g. "john")
-    func sendMessageToNickName(_ message: String, nickName: String)
+    func sendPrivateMessage(_ message: String, toNickName: String)
     
     /// Send a message to a specific channel
     /// @param message The message to send
     /// @param channel The target channel (e.g. "#test")
-    func sendMessageToChannel(_ message: String, channel: String)
+    func sendMessage(_ message: String, toChannel: String)
 }

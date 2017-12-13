@@ -28,9 +28,14 @@ open class GMIRCMessage: NSObject {
 //    private(set) var parameters: String?
     fileprivate(set) var params: GMIRCMessageParams?
     
+    /// msg: :dooleybites!dooleybite@ihw-uqotg4.fios.verizon.net JOIN :#ebooks
+
     /// format: prefix + cmd + params + crlf
     /// e.g. :card.freenode.net 001 eugenio_ios :Welcome to the freenode Internet Relay Chat Network eugenio_ios
     /// e.g. :eugenio79!~giuseppem@93-34-6-226.ip47.fastwebnet.it PRIVMSG eugenio_ios :Hi, I am Eugenio too
+    
+   // msg: |:excalibur.pa.us.irchighway.net 001 therick :Welcome to the irchighway IRC Network therick!therick76@65-78-26-5.s515.c3-0.nyr-ubr4.nyr.ny.cable.rcncustomer.com|
+
     init?(message: String) {
         
         super.init()

@@ -46,6 +46,20 @@ class GMIRCMessageTests: XCTestCase {
         XCTAssertEqual(ircMessage!.params!.textToBeSent, "Welcome to the freenode Internet Relay Chat Network GMIRCClient")
     }
     
+    func test_welcomeMessage2() {
+        let msg = ":excalibur.pa.us.irchighway.net 001 therick :Welcome to the irchighway IRC Network therick!therick76@65-78-26-5.s515.c3-0.nyr-ubr4.nyr.ny.cable.rcncustomer.com"
+        let ircMessage = GMIRCMessage(message: msg)
+        
+        XCTAssertNotNil(ircMessage!.prefix)
+        XCTAssertNotNil(ircMessage!.prefix!.serverName)
+        XCTAssertEqual(ircMessage!.prefix!.serverName, "excalibur.pa.us.irchighway.net")
+        XCTAssertEqual(ircMessage!.command!, "001")
+        
+        XCTAssertEqual(ircMessage!.params!.msgTarget, "therick")
+        XCTAssertEqual(ircMessage!.params!.textToBeSent, "Welcome to the irchighway IRC Network therick!therick76@65-78-26-5.s515.c3-0.nyr-ubr4.nyr.ny.cable.rcncustomer.com")
+    }
+
+    
     func test_privateMessage() {
         let msg = ":eugenio79!~giuseppem@93-34-6-226.ip47.fastwebnet.it PRIVMSG GMIRCClient :Hi, I am another client"
         let ircMessage = GMIRCMessage(message: msg)

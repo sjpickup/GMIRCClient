@@ -47,8 +47,31 @@ class GMIRCClientTests: XCTestCase, GMIRCClientDelegate {
         
         socket.responseToMessage("USER eugenio 0 * : eugenio", response: ":card.freenode.net 001 eugenio :Welcome to the freenode Internet Relay Chat Network eugenio")
         
-        socket.responseToMessage("JOIN #test", response: ":eugenio!~eugenio_i@93-34-6-226.ip47.fastwebnet.it JOIN #test")
+        socket.responseToMessage("JOIN #test", response: ":eugenio!~eugenio_i@93-34-6-226.ip47.fastwebnet.it JOIN :#test")
 
+        expectation = self.expectation(description: "Welcome expectation")
+        
+        ircClient.register( nickName: "eugenio", user: "eugenio", realName: "eugenio")
+        
+        waitForExpectations(timeout: 0.05) { error in
+            XCTAssertNil(error)
+            
+            self.expectation = self.expectation(description: "Join expectation")
+            
+            self.ircClient.join(channel: "#test")
+            
+            self.waitForExpectations(timeout: 0.05) { error in
+                XCTAssertNil(error)
+            }
+        }
+    }
+    
+    func test_register_welcome_without_colon() {
+        
+        socket.responseToMessage("USER eugenio 0 * : eugenio", response: ":card.freenode.net 001 eugenio :Welcome to the freenode Internet Relay Chat Network eugenio")
+        
+        socket.responseToMessage("JOIN #test", response: ":eugenio!~eugenio_i@93-34-6-226.ip47.fastwebnet.it JOIN #test")
+        
         expectation = self.expectation(description: "Welcome expectation")
         
         ircClient.register( nickName: "eugenio", user: "eugenio", realName: "eugenio")
@@ -72,7 +95,7 @@ class GMIRCClientTests: XCTestCase, GMIRCClientDelegate {
         
         expectation = self.expectation(description: "Private message expectation")
         
-        ircClient.sendMessageToNickName("Hi, I'm GMIRCClient. Nice to meet you!", nickName: "eugenio79")
+        ircClient.sendPrivateMessage("Hi, I'm GMIRCClient. Nice to meet you!", toNickName: "eugenio79")
         
         waitForExpectations(timeout: 0.05) { error in
             XCTAssertNil(error)

@@ -31,28 +31,27 @@ open class GMIRCMessageParams: NSObject {
     
     /// e.g. the the text of a PRIVMSG
     fileprivate(set) var textToBeSent: String?
-    
+
     /// @param stringToParse e.g. "eugenio_ios :Hi, I am Eugenio too"
     init( fromString: String) {
         
         super.init()
         
-        guard let msgTargetIdx = fromString.index(of: " ")
-            else {
-            self.unparsed = fromString
-            return
+        var idx = fromString.startIndex
+        
+        if let msgTargetIdx = fromString.index(of: " ")
+        {
+            self.msgTarget = String( fromString[..<msgTargetIdx] )
+            idx = fromString.index(after: msgTargetIdx)
         }
         
-        self.msgTarget = String( fromString[..<msgTargetIdx] )
-        let afterMsgTargetIdx = fromString.index(after: msgTargetIdx)
-        let remaining = fromString[afterMsgTargetIdx...]
-        guard let colonIdx = remaining.index(of:":")
-            else {
-                self.unparsed = String( remaining )
-                return
+        
+        let remaining = fromString[idx...]
+        if( remaining.hasPrefix(":"))
+        {
+            idx = remaining.index(after: idx)
         }
         
-        let afterColonIdx = fromString.index(after: colonIdx)
-        self.textToBeSent = String( fromString[afterColonIdx...] )
+        self.textToBeSent = String( fromString[idx...] )
     }
 }
