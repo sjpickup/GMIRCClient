@@ -121,8 +121,6 @@ extension GMIRCClient: GMSocketDelegate {
     
     public func didReceiveMessage(_ msg: String) {
         
-        print("\(msg)")
-        
         let msgList = msg.components(separatedBy: ENDLINE)
         for line in msgList {
             if line.hasPrefix("PING") {
@@ -134,7 +132,7 @@ extension GMIRCClient: GMSocketDelegate {
     }
     
     public func didClose() {
-        print("Socket connection closed")
+        print("[DEBUG] Socket closed")
         
         _connectionRegistered = false
     }
@@ -159,23 +157,28 @@ private extension GMIRCClient {
     
     func _handleMessage(_ msg: String) {
         
-        let ircMsg = GMIRCMessage(message: msg)
-
-        guard ircMsg != nil else {
-//            print("Can't parse message: \(msg)")
+        if( msg.isEmpty )
+        {
+            return
+        }
+        print("msg: |\(msg)|")
+        
+        guard let ircMsg = GMIRCMessage(message: msg),
+        let command = ircMsg.command
+            else {
             return
         }
         
-        switch ircMsg!.command! {
+        switch command {
         case "001":
             _ready = true
             delegate?.didWelcome()
         case "JOIN":
-            delegate?.didJoin(ircMsg!.params!.unparsed!)
+            delegate?.didJoin(ircMsg.params!.unparsed!)
         case "PRIVMSG":
-            delegate?.didReceivePrivateMessage(ircMsg!.params!.textToBeSent!, from: ircMsg!.prefix!.nickName!)
+            delegate?.didReceivePrivateMessage(ircMsg.params!.textToBeSent!, from: ircMsg.prefix!.nickName!)
         default:
-//            print("Message not handled: \(msg)")
+            print("cmd not handled: |\(command)|" )
             break;
         }
     }

@@ -39,7 +39,7 @@ class GMIRCMessageTests: XCTestCase {
         
         XCTAssertNotNil(ircMessage!.prefix)
         XCTAssertNotNil(ircMessage!.prefix!.serverName)
-        XCTAssertEqual(ircMessage!.prefix!.serverName!, "card.freenode.net")
+        XCTAssertEqual(ircMessage!.prefix!.serverName, "card.freenode.net")
         XCTAssertEqual(ircMessage!.command!, "001")
         
         XCTAssertEqual(ircMessage!.params!.msgTarget, "GMIRCClient")

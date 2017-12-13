@@ -22,7 +22,7 @@
 import Foundation
 
 /// What methods should a class implement to become a delegate of a socket
-@objc public protocol GMSocketDelegate {
+public protocol GMSocketDelegate {
 
     /// Called when socket connection is open
     func didOpen()

@@ -36,8 +36,19 @@ class GMIRCMessagePrefixTests: XCTestCase {
     func test_nickName_exists() {
         let prefixStr = ":eugenio79!~giuseppem@93-34-6-226.ip47.fastwebnet.it"
         let prefix = GMIRCMessagePrefix(prefix: prefixStr)!
-        
+
         XCTAssertEqual(prefix.nickName!, "eugenio79")
+        XCTAssertEqual(prefix.realName, "~giuseppem")
+        XCTAssertEqual(prefix.serverName, "93-34-6-226.ip47.fastwebnet.it")
+    }
+    
+    func test_only_username() {
+        let prefixStr = ":+rickjames@weber.freenode.net"
+        let prefix = GMIRCMessagePrefix(prefix: prefixStr)!
+        
+        XCTAssertNil(prefix.nickName)
+        XCTAssertEqual(prefix.realName, "+rickjames")
+        XCTAssertEqual(prefix.serverName, "weber.freenode.net")
     }
     
     func test_no_nickName() {
@@ -45,6 +56,9 @@ class GMIRCMessagePrefixTests: XCTestCase {
         let prefix = GMIRCMessagePrefix(prefix: prefixStr)!
         
         XCTAssertNil(prefix.nickName)
+        XCTAssertNil(prefix.realName)
+        XCTAssertEqual(prefix.serverName, "weber.freenode.net")
+
     }
 
 }

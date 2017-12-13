@@ -33,28 +33,26 @@ open class GMIRCMessageParams: NSObject {
     fileprivate(set) var textToBeSent: String?
     
     /// @param stringToParse e.g. "eugenio_ios :Hi, I am Eugenio too"
-    init?(stringToParse: String) {
+    init( fromString: String) {
         
         super.init()
         
-        var idx = stringToParse.index(of: " ")
-        
-        if idx == nil {
-            unparsed = stringToParse
+        guard let msgTargetIdx = fromString.index(of: " ")
+            else {
+            self.unparsed = fromString
             return
         }
         
-        msgTarget = stringToParse.substring(to: idx!)
-        
-        let remaining = stringToParse.substring(from: idx! )
-        
-        idx = remaining.index(of: ":")
-        
-        if idx == nil {
-            unparsed = remaining
-            return
+        self.msgTarget = String( fromString[..<msgTargetIdx] )
+        let afterMsgTargetIdx = fromString.index(after: msgTargetIdx)
+        let remaining = fromString[afterMsgTargetIdx...]
+        guard let colonIdx = remaining.index(of:":")
+            else {
+                self.unparsed = String( remaining )
+                return
         }
         
-        textToBeSent = remaining.substring(from: idx! )
+        let afterColonIdx = fromString.index(after: colonIdx)
+        self.textToBeSent = String( fromString[afterColonIdx...] )
     }
 }

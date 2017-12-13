@@ -29,7 +29,7 @@ open class GMSocket: NSObject {
     /// The port to which the socket will connect (e.g. 6667)
     fileprivate(set) open var port: Int
     
-    open weak var delegate: GMSocketDelegate?
+    open var delegate: GMSocketDelegate?
     
     fileprivate var inputStream: InputStream?
     fileprivate var outputStream: OutputStream?

@@ -48,15 +48,15 @@ class GMIRCClientTests: XCTestCase, GMIRCClientDelegate {
         socket.responseToMessage("USER eugenio 0 * : eugenio", response: ":card.freenode.net 001 eugenio :Welcome to the freenode Internet Relay Chat Network eugenio")
         
         socket.responseToMessage("JOIN #test", response: ":eugenio!~eugenio_i@93-34-6-226.ip47.fastwebnet.it JOIN #test")
-        
-    //    expectation = self.expectation(withDescription: "Welcome expectation")
+
+        expectation = self.expectation(description: "Welcome expectation")
         
         ircClient.register( nickName: "eugenio", user: "eugenio", realName: "eugenio")
         
         waitForExpectations(timeout: 0.05) { error in
             XCTAssertNil(error)
             
-     //       self.expectation = self.expectation(withDescription: "Join expectation")
+            self.expectation = self.expectation(description: "Join expectation")
             
             self.ircClient.join(channel: "#test")
             
@@ -70,7 +70,7 @@ class GMIRCClientTests: XCTestCase, GMIRCClientDelegate {
 
         socket.responseToMessage("PRIVMSG eugenio79 :Hi, I\'m GMIRCClient. Nice to meet you!", response: ":eugenio79!~giuseppem@93-34-6-226.ip47.fastwebnet.it PRIVMSG GMIRCClient :Hi, I am a client too")
         
-     //   expectation = self.expectation(withDescription: "Private message expectation")
+        expectation = self.expectation(description: "Private message expectation")
         
         ircClient.sendMessageToNickName("Hi, I'm GMIRCClient. Nice to meet you!", nickName: "eugenio79")
         

@@ -23,7 +23,7 @@ import Foundation
 
 class GMSocketStub: NSObject, GMSocketProtocol {
     
-    weak var delegate: GMSocketDelegate?
+    var delegate: GMSocketDelegate?
     
     fileprivate(set) var host: String
     fileprivate(set) var port: Int

@@ -35,10 +35,10 @@ class GMIRCMessageParamsTests: XCTestCase {
 
     func test_PRIVMSG() {
         let msg = "eugenio :Hi, I am an IRC client"
-        let params = GMIRCMessageParams(stringToParse: msg)
-        XCTAssertNotNil(params)
-        XCTAssertEqual(params!.msgTarget!, "eugenio")
-        XCTAssertEqual(params!.textToBeSent!, "Hi, I am an IRC client")
+        let params = GMIRCMessageParams(fromString: msg)
+        
+        XCTAssertEqual(params.msgTarget!, "eugenio")
+        XCTAssertEqual(params.textToBeSent!, "Hi, I am an IRC client")
     }
 
 }

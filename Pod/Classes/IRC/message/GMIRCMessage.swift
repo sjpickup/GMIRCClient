@@ -34,30 +34,32 @@ open class GMIRCMessage: NSObject {
     init?(message: String) {
         
         super.init()
-        
-        var msg = message
-        
+
+        var idx = message.startIndex
         // prefix
         if message.hasPrefix(":") {
-            if let idx = msg.index(of: " ") {
-                let prefixStr = msg.substring(to: idx)
-                prefix = GMIRCMessagePrefix(prefix: prefixStr)
-                msg = msg.substring(from: idx)
-            } else {
+           
+            guard let prefixIdx = message.index(of: " ")
+            else {
                 return nil
+
             }
+            
+            self.prefix = GMIRCMessagePrefix(prefix: String(message[..<prefixIdx]) )
+            
+            idx = message.index(after: prefixIdx)
         }
         
         // command
-        if let idx = msg.index(of: " ") {
-            command = msg.substring(to: idx)
-            msg = msg.substring( from: idx )
-        } else {
-            return nil
+        guard let commandIdx = message[idx...].index(of: " ")
+            else {
+                print("couldn't find command")
+                return nil
         }
         
-        // parameters
-        params = GMIRCMessageParams(stringToParse: msg)
-//        parameters = msg
+        self.command = String(message[ idx ..< commandIdx ])
+        let afterCommandIdx = message.index(after: commandIdx)
+        let remaining = String( message[ afterCommandIdx... ] )
+        self.params = GMIRCMessageParams(fromString: remaining)
     }
 }

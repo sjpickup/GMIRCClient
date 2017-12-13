@@ -22,13 +22,13 @@
 import Foundation
 
 /// What an implementation of a socket should implement at least
-@objc public protocol GMSocketProtocol {
+public protocol GMSocketProtocol {
     
     var host: String { get }
     var port: Int { get }
     
     /// Who'll listen for socket events (e.g. open, close, message received)
-    weak var delegate: GMSocketDelegate? { get set }
+    var delegate: GMSocketDelegate? { get set }
     
     init(host: String, port: Int)
     

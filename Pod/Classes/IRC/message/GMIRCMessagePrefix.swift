@@ -23,28 +23,38 @@ import Foundation
 /// An IRC message prefix
 open class GMIRCMessagePrefix: NSObject {
     
-    fileprivate(set) var nickName: String?
-    fileprivate(set) var serverName: String?
+    private(set) var nickName: String?
+    private(set) var realName: String?
+    let serverName: String
     
     /// @param prefix e.g. ":eugenio79!~giuseppem@93-34-6-226.ip47.fastwebnet.it"
     init?(prefix: String) {
         
-        super.init()
         
-        var idx = prefix.index(of: ":")  // an IRC prefix should start with ":"
-        
-        guard idx != nil else {
+        // an IRC prefix should start with ":"
+        guard let colonIdx = prefix.index(of: ":")
+            else {
             return nil
         }
         
-        let remainingPrefix = prefix.substring(from: idx!)
+        var idx = prefix.index(after: colonIdx)
         
-        idx = remainingPrefix.index(of: "!")
-        
-        if idx != nil {
-            nickName = remainingPrefix.substring(to: idx!)
-        } else {
-            serverName = remainingPrefix
+        self.nickName = nil
+        self.realName = nil
+        if let atIdx = prefix.index(of:"@")
+        {
+            if let nickIdx = prefix.index( of: "!" )
+            {
+                self.nickName = String(prefix[ idx ..< nickIdx ])
+                idx = prefix.index(after: nickIdx )
+            }
+            
+            self.realName = String(prefix[ idx ..< atIdx ])
+            idx = prefix.index(after: atIdx)
         }
+        
+        self.serverName = String( prefix[idx...] )
+        
+        super.init()
     }
 }
