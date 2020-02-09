@@ -7,11 +7,13 @@ NOTE: currently the set of features is minimal but I hope to extend them soon.
 ## Requirements
 
 * iOS 8.0+
-* Xcode 7.1+
+* Xcode 9.1+
 
 ## Installation
 
-GMIRCClient is available through [CocoaPods](http://cocoapods.org). To install
+_Current version is not available through public CooaPods_
+
+Eugenio's original GMIRCClient is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
@@ -48,7 +50,7 @@ func didReceivePrivateMessage(text: String, from: String) {
 }
 ```
 
-## Author
+## Original Author
 
 Giuseppe Morana aka Eugenio, giuseppe.morana.79@gmail.com
 
