@@ -39,7 +39,7 @@ open class GMIRCMessageParams: NSObject {
         
         var idx = fromString.startIndex
         
-        if let msgTargetIdx = fromString.index(of: " ")
+        if let msgTargetIdx = fromString.firstIndex(of: " ")
         {
             self.msgTarget = String( fromString[..<msgTargetIdx] )
             idx = fromString.index(after: msgTargetIdx)

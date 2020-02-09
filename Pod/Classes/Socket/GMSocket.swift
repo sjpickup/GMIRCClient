@@ -53,8 +53,8 @@ extension GMSocket: GMSocketProtocol {
         
         Stream.getStreamsToHost(withName: host, port: port, inputStream: &inputStream, outputStream: &outputStream)
         
-        inputStream!.schedule(in: .main, forMode: RunLoopMode.defaultRunLoopMode)
-        outputStream!.schedule(in: .main, forMode: RunLoopMode.defaultRunLoopMode)
+        inputStream!.schedule(in: .main, forMode: RunLoop.Mode.default)
+        outputStream!.schedule(in: .main, forMode: RunLoop.Mode.default)
         
         inputStream!.delegate = self
         outputStream!.delegate = self
@@ -149,7 +149,7 @@ private extension GMSocket {
     
     func _endEncountered(_ aStream: Stream) {
         aStream.close()
-        aStream.remove(from: .main, forMode: RunLoopMode.defaultRunLoopMode)
+        aStream.remove(from: .main, forMode: RunLoop.Mode.default)
         delegate?.didClose()
     }
 }

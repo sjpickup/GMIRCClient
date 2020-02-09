@@ -44,7 +44,7 @@ open class GMIRCMessage: NSObject {
         // prefix
         if message.hasPrefix(":") {
            
-            guard let prefixIdx = message.index(of: " ")
+            guard let prefixIdx = message.firstIndex(of: " ")
             else {
                 return nil
 
@@ -56,7 +56,7 @@ open class GMIRCMessage: NSObject {
         }
         
         // command
-        guard let commandIdx = message[idx...].index(of: " ")
+        guard let commandIdx = message[idx...].firstIndex(of: " ")
             else {
                 print("couldn't find command")
                 return nil

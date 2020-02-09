@@ -22,7 +22,7 @@ import Foundation
 
 public protocol GMIRCClientProtocol: NSObjectProtocol {
     
-    weak var delegate: GMIRCClientDelegate? { get set }
+    var delegate: GMIRCClientDelegate? { get set }
     
     init(socket: GMSocketProtocol)
     

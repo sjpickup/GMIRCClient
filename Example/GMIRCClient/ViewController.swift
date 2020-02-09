@@ -31,7 +31,7 @@ class ViewController: UIViewController {
         let socket = GMSocket(host: "irc.freenode.net", port: 6667)
         irc = GMIRCClient(socket: socket)
         irc.delegate = self
-        irc.register( nickName: "eugenio_ios", user: "eugenio_ios", realName: "Giuseppe Morana")
+        irc.register( nickName: "gmirc_test", user: "gmirc_test", realName: "GMIRCClient Test")
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,7 +50,7 @@ extension ViewController: GMIRCClientDelegate {
     func didJoin(_ channel: String) {
         print("Joined chat room: \(channel)")
         
-        irc.sendPrivateMessage("Hi, I'm eugenio_ios. Nice to meet you!", toNickName: "eugenio79")
+        irc.sendPrivateMessage("Hi, I'm gmirc_test. Nice to meet you!", toNickName: "eugenio79")
     }
     
     func didReceivePrivateMessage(_ text: String, from: String) {

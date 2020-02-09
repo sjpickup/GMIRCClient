@@ -32,7 +32,7 @@ open class GMIRCMessagePrefix: NSObject {
         
         
         // an IRC prefix should start with ":"
-        guard let colonIdx = prefix.index(of: ":")
+        guard let colonIdx = prefix.firstIndex(of: ":")
             else {
             return nil
         }
@@ -41,9 +41,9 @@ open class GMIRCMessagePrefix: NSObject {
         
         self.nickName = nil
         self.realName = nil
-        if let atIdx = prefix.index(of:"@")
+        if let atIdx = prefix.firstIndex(of:"@")
         {
-            if let nickIdx = prefix.index( of: "!" )
+            if let nickIdx = prefix.firstIndex( of: "!" )
             {
                 self.nickName = String(prefix[ idx ..< nickIdx ])
                 idx = prefix.index(after: nickIdx )
