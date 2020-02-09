@@ -114,6 +114,10 @@ class GMIRCClientTests: XCTestCase, GMIRCClientDelegate {
         expectation.fulfill()
     }
     
+    func didLeave(_ channel: String) {
+        // TODO
+    }
+    
     func didReceivePrivateMessage(_ text: String, from: String) {
         print("\(from): \(text)")
         
@@ -123,4 +127,8 @@ class GMIRCClientTests: XCTestCase, GMIRCClientDelegate {
         expectation.fulfill()
     }
 
+    func didReceiveMessage(_ message: GMIRCMessage) {
+        // TODO
+    }
+    
 }

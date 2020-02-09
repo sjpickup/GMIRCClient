@@ -30,8 +30,9 @@ open class GMIRCClient: NSObject {
     
     fileprivate var _socket: GMSocketProtocol
     fileprivate var _nickName: String = ""
-    fileprivate var _user: String = ""
-    fileprivate var _realName: String = ""
+    fileprivate var _user: String!
+    fileprivate var _realName: String!
+    fileprivate var _pass: String!
     
     /// true when a I registered successfully (user and nick)
     fileprivate var _connectionRegistered = false
@@ -75,6 +76,16 @@ extension GMIRCClient: GMIRCClientProtocol {
         _socket.delegate = self
         _socket.open()
     }
+
+    // Alternative registration method when user and realName 
+    // aren't known/needed
+    public func registerWithNickname(nickName: String, pass: String) {
+        _nickName = nickName
+        _pass = pass
+        
+        _socket.delegate = self
+        _socket.open()
+    }
     
     public func join( channel: String) {
         guard !channel.isEmpty && channel.hasPrefix("#") else {
@@ -82,6 +93,13 @@ extension GMIRCClient: GMIRCClientProtocol {
         }
         _sendCommand("JOIN \(channel)")
     }
+
+    public func leave(channel: String) {
+        guard !channel.isEmpty && channel.hasPrefix("#") else {
+            return
+        }
+        _sendCommand("PART \(channel)")
+    }    
     
     public func sendPrivateMessage(_ message: String, toNickName: String) {
         guard !toNickName.hasPrefix("#") else {
@@ -112,13 +130,19 @@ extension GMIRCClient: GMSocketDelegate {
         if !_connectionRegistered && !_waitingForRegistration {
             
             _waitingForRegistration = true
+
+            if (_pass != nil) {
+                _sendCommand("PASS \(_pass!)")
+            }
             
             _sendCommand("NICK \(_nickName)")
-            _sendCommand("USER \(_user) 0 * : \(_realName)")
+
+            if (_user != nil && _realName != nil) {
+                _sendCommand("USER \(_user!) 0 * : \(_realName!)")
+            }
         }
     }
-    
-    
+
     public func didReceiveMessage(_ msg: String) {
         
         let msgList = msg.components(separatedBy: ENDLINE)
@@ -171,14 +195,21 @@ private extension GMIRCClient {
         
         switch command {
         case "001":
+            print("\(msg)")        
             _ready = true
             delegate?.didWelcome()
         case "JOIN":
+            print("\(msg)")               
             delegate?.didJoin(ircMsg.params!.textToBeSent!)
+        case "PART":
+            print("\(msg)")               
+            delegate?.didLeave(ircMsg.params!.textToBeSent!)
         case "PRIVMSG":
+            print("\(msg)")               
             delegate?.didReceivePrivateMessage(ircMsg.params!.textToBeSent!, from: ircMsg.prefix!.nickName!)
         default:
-            print("cmd not handled: |\(command)|" )
+            delegate?.didReceiveMessage(ircMsg)
+//            print("Message not handled: \(msg)")
             break;
         }
     }
