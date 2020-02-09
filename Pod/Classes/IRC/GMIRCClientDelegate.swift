@@ -20,7 +20,7 @@
 
 import Foundation
 
-public protocol GMIRCClientDelegate: NSObjectProtocol {
+@objc public protocol GMIRCClientDelegate: NSObjectProtocol {
     
     /// When this method is called, the channel is ready
     /// At this point you can join a chat room
@@ -29,9 +29,18 @@ public protocol GMIRCClientDelegate: NSObjectProtocol {
     /// Called when successfully joined a chat room
     /// @param channel Prepend an hash symbol (#) to the chat room name, e.g. "#test"
     func didJoin(_ channel: String)
+
+    /// Called when successfully left a chat room
+    /// @param channel Prepend an hash symbol (#) to the chat room name, e.g. "#test"
+    func didLeave(_ channel: String)    
     
     /// Called when someone sent you a private message
     /// @param text The text sent by the user
     /// @param from The nickName of who sent you the message
     func didReceivePrivateMessage(_ text: String, from: String)
+
+    /// Called when someone sent a message to the channel
+    /// @param text The text sent by the user
+    /// @param from The nickName of who sent the message
+    func didReceiveMessage(_ message: GMIRCMessage)
 }

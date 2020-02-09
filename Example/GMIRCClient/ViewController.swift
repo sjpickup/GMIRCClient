@@ -41,7 +41,7 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: GMIRCClientDelegate {
-    
+
     func didWelcome() {
         print("Received welcome message - ready to join a chat room")
         irc.join( channel: "#test")
@@ -52,8 +52,16 @@ extension ViewController: GMIRCClientDelegate {
         
         irc.sendPrivateMessage("Hi, I'm gmirc_test. Nice to meet you!", toNickName: "eugenio79")
     }
+
+    func didLeave(_ channel: String) {
+        print("Left chat room: \(channel)")
+    }
     
     func didReceivePrivateMessage(_ text: String, from: String) {
         print("\(from): \(text)")
+    }
+
+    func didReceiveMessage(_ message: GMIRCMessage) {
+        print("Received message \(message)")
     }
 }
