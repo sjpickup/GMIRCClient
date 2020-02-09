@@ -16,14 +16,14 @@ Pod::Spec.new do |s|
   s.author           = { "Giuseppe Morana aka Eugenio" => "giuseppe.morana.79@gmail.com" }
   s.source           = { :git => "https://github.com/sjpickup/GMIRCClient.git" }
 
-  s.ios.deployment_target = '7.0'
+  s.ios.deployment_target = '8.0'
   s.tvos.deployment_target = '9.0'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
-  s.resource_bundles = {
-    'GMIRCClient' => ['Pod/Assets/*.png']
-  }
+  # s.resource_bundles = {
+  #   'GMIRCClient' => ['Pod/Assets/*.png']
+  # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
